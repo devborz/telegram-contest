@@ -1,0 +1,6 @@
+framework module Pods_TelegramPhotoEditor {
+  umbrella header "Pods-TelegramPhotoEditor-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,549 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12ADFAF6932CA076F1DB2A75 /* Pods_TelegramPhotoEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46BB2F789A57D7F7EAAED6AD /* Pods_TelegramPhotoEditor.framework */; };
+		8D20C47B28F84C6400562A9C /* ToolPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C47A28F84C6400562A9C /* ToolPickerView.swift */; };
+		8D20C47E28F84CA200562A9C /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C47D28F84CA200562A9C /* Tool.swift */; };
+		8D20C48028F8697F00562A9C /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C47F28F8697F00562A9C /* MediaView.swift */; };
+		8D20C48228F86C0200562A9C /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C48128F86C0200562A9C /* CanvasView.swift */; };
+		8D5FBABD28F61F0A0009EA8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBABC28F61F0A0009EA8C /* AppDelegate.swift */; };
+		8D5FBABF28F61F0A0009EA8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBABE28F61F0A0009EA8C /* SceneDelegate.swift */; };
+		8D5FBAC128F61F0A0009EA8C /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAC028F61F0A0009EA8C /* GalleryViewController.swift */; };
+		8D5FBAC428F61F0A0009EA8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D5FBAC228F61F0A0009EA8C /* Main.storyboard */; };
+		8D5FBAC628F61F0B0009EA8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5FBAC528F61F0B0009EA8C /* Assets.xcassets */; };
+		8D5FBAC928F61F0B0009EA8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D5FBAC728F61F0B0009EA8C /* LaunchScreen.storyboard */; };
+		8D5FBAD228F626D80009EA8C /* PhotoPickerAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD028F626D80009EA8C /* PhotoPickerAssetCell.swift */; };
+		8D5FBAD328F626D80009EA8C /* PhotoPickerAssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */; };
+		8D5FBAD528F627070009EA8C /* PhotoPickerAssetCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD428F627070009EA8C /* PhotoPickerAssetCellViewModel.swift */; };
+		8D5FBAD728F6276A0009EA8C /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD628F6276A0009EA8C /* Functions.swift */; };
+		8DE033B628F6EAC400F3912F /* AllowAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */; };
+		8DE033C528F715C100F3912F /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */; };
+		8DE033C728F71D1900F3912F /* SegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C628F71D1900F3912F /* SegmentControl.swift */; };
+		8DE033C928F76E0C00F3912F /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C828F76E0C00F3912F /* VideoView.swift */; };
+		8DE033CB28F7798F00F3912F /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033CA28F7798F00F3912F /* Slider.swift */; };
+		8DE033CD28F7924700F3912F /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033CC28F7924700F3912F /* BlurView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		46BB2F789A57D7F7EAAED6AD /* Pods_TelegramPhotoEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelegramPhotoEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		759FB60FFBC8950549545A65 /* Pods-TelegramPhotoEditor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramPhotoEditor.debug.xcconfig"; path = "Target Support Files/Pods-TelegramPhotoEditor/Pods-TelegramPhotoEditor.debug.xcconfig"; sourceTree = "<group>"; };
+		7C4494D0F0CA5306F5ABDDD8 /* Pods-TelegramPhotoEditor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramPhotoEditor.release.xcconfig"; path = "Target Support Files/Pods-TelegramPhotoEditor/Pods-TelegramPhotoEditor.release.xcconfig"; sourceTree = "<group>"; };
+		8D20C47A28F84C6400562A9C /* ToolPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPickerView.swift; sourceTree = "<group>"; };
+		8D20C47D28F84CA200562A9C /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
+		8D20C47F28F8697F00562A9C /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
+		8D20C48128F86C0200562A9C /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		8D5FBAB928F61F0A0009EA8C /* TelegramPhotoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramPhotoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5FBABC28F61F0A0009EA8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8D5FBABE28F61F0A0009EA8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8D5FBAC028F61F0A0009EA8C /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		8D5FBAC328F61F0A0009EA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8D5FBAC528F61F0B0009EA8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8D5FBAC828F61F0B0009EA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8D5FBACA28F61F0B0009EA8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D5FBAD028F626D80009EA8C /* PhotoPickerAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssetCell.swift; sourceTree = "<group>"; };
+		8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoPickerAssetCell.xib; sourceTree = "<group>"; };
+		8D5FBAD428F627070009EA8C /* PhotoPickerAssetCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssetCellViewModel.swift; sourceTree = "<group>"; };
+		8D5FBAD628F6276A0009EA8C /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowAccessViewController.swift; sourceTree = "<group>"; };
+		8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
+		8DE033C628F71D1900F3912F /* SegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentControl.swift; sourceTree = "<group>"; };
+		8DE033C828F76E0C00F3912F /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		8DE033CA28F7798F00F3912F /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		8DE033CC28F7924700F3912F /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5FBAB628F61F0A0009EA8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12ADFAF6932CA076F1DB2A75 /* Pods_TelegramPhotoEditor.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		689422707AA003F348E132A3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				759FB60FFBC8950549545A65 /* Pods-TelegramPhotoEditor.debug.xcconfig */,
+				7C4494D0F0CA5306F5ABDDD8 /* Pods-TelegramPhotoEditor.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		8D20C47C28F84C7B00562A9C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8D20C47D28F84CA200562A9C /* Tool.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		8D5FBAB028F61F0A0009EA8C = {
+			isa = PBXGroup;
+			children = (
+				8D5FBABB28F61F0A0009EA8C /* TelegramPhotoEditor */,
+				8D5FBABA28F61F0A0009EA8C /* Products */,
+				689422707AA003F348E132A3 /* Pods */,
+				A899180EF0352AE33660E745 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8D5FBABA28F61F0A0009EA8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBAB928F61F0A0009EA8C /* TelegramPhotoEditor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D5FBABB28F61F0A0009EA8C /* TelegramPhotoEditor */ = {
+			isa = PBXGroup;
+			children = (
+				8DE033C328F6EC2900F3912F /* Storyboards */,
+				8DE033BE28F6EB9400F3912F /* App */,
+				8D20C47C28F84C7B00562A9C /* Models */,
+				8DE033C228F6EBBA00F3912F /* ViewModels */,
+				8DE033C128F6EBB400F3912F /* Views */,
+				8DE033C028F6EBA300F3912F /* Controllers */,
+				8DE033BF28F6EB9A00F3912F /* Resources */,
+				8D5FBAD628F6276A0009EA8C /* Functions.swift */,
+			);
+			path = TelegramPhotoEditor;
+			sourceTree = "<group>";
+		};
+		8DE033BE28F6EB9400F3912F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBABC28F61F0A0009EA8C /* AppDelegate.swift */,
+				8D5FBABE28F61F0A0009EA8C /* SceneDelegate.swift */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		8DE033BF28F6EB9A00F3912F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBAC528F61F0B0009EA8C /* Assets.xcassets */,
+				8D5FBACA28F61F0B0009EA8C /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		8DE033C028F6EBA300F3912F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */,
+				8D5FBAC028F61F0A0009EA8C /* GalleryViewController.swift */,
+				8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		8DE033C128F6EBB400F3912F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBAD028F626D80009EA8C /* PhotoPickerAssetCell.swift */,
+				8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */,
+				8DE033C628F71D1900F3912F /* SegmentControl.swift */,
+				8DE033C828F76E0C00F3912F /* VideoView.swift */,
+				8DE033CA28F7798F00F3912F /* Slider.swift */,
+				8DE033CC28F7924700F3912F /* BlurView.swift */,
+				8D20C47A28F84C6400562A9C /* ToolPickerView.swift */,
+				8D20C47F28F8697F00562A9C /* MediaView.swift */,
+				8D20C48128F86C0200562A9C /* CanvasView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		8DE033C228F6EBBA00F3912F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBAD428F627070009EA8C /* PhotoPickerAssetCellViewModel.swift */,
+			);
+			name = ViewModels;
+			sourceTree = "<group>";
+		};
+		8DE033C328F6EC2900F3912F /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				8D5FBAC228F61F0A0009EA8C /* Main.storyboard */,
+				8D5FBAC728F61F0B0009EA8C /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		A899180EF0352AE33660E745 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				46BB2F789A57D7F7EAAED6AD /* Pods_TelegramPhotoEditor.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D5FBAB828F61F0A0009EA8C /* TelegramPhotoEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D5FBACD28F61F0B0009EA8C /* Build configuration list for PBXNativeTarget "TelegramPhotoEditor" */;
+			buildPhases = (
+				64E600BF37C6966A847B1E8E /* [CP] Check Pods Manifest.lock */,
+				8D5FBAB528F61F0A0009EA8C /* Sources */,
+				8D5FBAB628F61F0A0009EA8C /* Frameworks */,
+				8D5FBAB728F61F0A0009EA8C /* Resources */,
+				66E1CA8C02399BB4C4EDE5AF /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TelegramPhotoEditor;
+			productName = TelegramPhotoEditor;
+			productReference = 8D5FBAB928F61F0A0009EA8C /* TelegramPhotoEditor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8D5FBAB128F61F0A0009EA8C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					8D5FBAB828F61F0A0009EA8C = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 8D5FBAB428F61F0A0009EA8C /* Build configuration list for PBXProject "TelegramPhotoEditor" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8D5FBAB028F61F0A0009EA8C;
+			productRefGroup = 8D5FBABA28F61F0A0009EA8C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D5FBAB828F61F0A0009EA8C /* TelegramPhotoEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5FBAB728F61F0A0009EA8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5FBAC928F61F0B0009EA8C /* LaunchScreen.storyboard in Resources */,
+				8D5FBAD328F626D80009EA8C /* PhotoPickerAssetCell.xib in Resources */,
+				8D5FBAC628F61F0B0009EA8C /* Assets.xcassets in Resources */,
+				8D5FBAC428F61F0A0009EA8C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		64E600BF37C6966A847B1E8E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TelegramPhotoEditor-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66E1CA8C02399BB4C4EDE5AF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TelegramPhotoEditor/Pods-TelegramPhotoEditor-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TelegramPhotoEditor/Pods-TelegramPhotoEditor-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TelegramPhotoEditor/Pods-TelegramPhotoEditor-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5FBAB528F61F0A0009EA8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5FBAC128F61F0A0009EA8C /* GalleryViewController.swift in Sources */,
+				8D20C47B28F84C6400562A9C /* ToolPickerView.swift in Sources */,
+				8D20C48228F86C0200562A9C /* CanvasView.swift in Sources */,
+				8DE033CB28F7798F00F3912F /* Slider.swift in Sources */,
+				8D20C47E28F84CA200562A9C /* Tool.swift in Sources */,
+				8D5FBAD228F626D80009EA8C /* PhotoPickerAssetCell.swift in Sources */,
+				8DE033C528F715C100F3912F /* PhotoEditorViewController.swift in Sources */,
+				8D5FBAD528F627070009EA8C /* PhotoPickerAssetCellViewModel.swift in Sources */,
+				8DE033CD28F7924700F3912F /* BlurView.swift in Sources */,
+				8D20C48028F8697F00562A9C /* MediaView.swift in Sources */,
+				8D5FBABD28F61F0A0009EA8C /* AppDelegate.swift in Sources */,
+				8D5FBABF28F61F0A0009EA8C /* SceneDelegate.swift in Sources */,
+				8DE033C928F76E0C00F3912F /* VideoView.swift in Sources */,
+				8D5FBAD728F6276A0009EA8C /* Functions.swift in Sources */,
+				8DE033B628F6EAC400F3912F /* AllowAccessViewController.swift in Sources */,
+				8DE033C728F71D1900F3912F /* SegmentControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8D5FBAC228F61F0A0009EA8C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D5FBAC328F61F0A0009EA8C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8D5FBAC728F61F0B0009EA8C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8D5FBAC828F61F0B0009EA8C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8D5FBACB28F61F0B0009EA8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8D5FBACC28F61F0B0009EA8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8D5FBACE28F61F0B0009EA8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 759FB60FFBC8950549545A65 /* Pods-TelegramPhotoEditor.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5LKB74WC3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TelegramPhotoEditor/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo and video";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.turkaev.usman.TelegramPhotoEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8D5FBACF28F61F0B0009EA8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C4494D0F0CA5306F5ABDDD8 /* Pods-TelegramPhotoEditor.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T5LKB74WC3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TelegramPhotoEditor/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo and video";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.turkaev.usman.TelegramPhotoEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8D5FBAB428F61F0A0009EA8C /* Build configuration list for PBXProject "TelegramPhotoEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D5FBACB28F61F0B0009EA8C /* Debug */,
+				8D5FBACC28F61F0B0009EA8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D5FBACD28F61F0B0009EA8C /* Build configuration list for PBXNativeTarget "TelegramPhotoEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D5FBACE28F61F0B0009EA8C /* Debug */,
+				8D5FBACF28F61F0B0009EA8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8D5FBAB128F61F0A0009EA8C /* Project object */;
+}
