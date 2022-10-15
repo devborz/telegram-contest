@@ -7,5 +7,6 @@ target 'TelegramPhotoEditor' do
 
   # Pods for TelegramPhotoEditor
   pod 'lottie-ios'
+  pod 'RxSwift'
 
 end

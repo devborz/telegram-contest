@@ -7,6 +7,7 @@
 
 import UIKit
 import PencilKit
+import RxSwift
 
 protocol CanvasDelegate: AnyObject {
     
@@ -52,38 +53,49 @@ class CanvasView: UIView {
         if #available(iOS 14.0, *) {
             canvasView.drawingPolicy = .anyInput
         } else {
-            // Fallback on earlier versions
+            canvasView.allowsFingerDrawing = true
         }
+        
         canvasView.delegate = self
         canvasView.backgroundColor = .clear
         
         canvasView.drawing = PKDrawing()
+        canvasView.overrideUserInterfaceStyle = .light
     }
     
-    func setBrush() {
+    private func updateBrush() {
         guard let currentTool = currentTool else { return }
         var pkTool: PKTool?
         switch currentTool.type {
         case .pen:
-            let tool = PKInkingTool.init(.pen,
-                                         color: currentTool.color,
-                                         width: currentTool.width)
-            pkTool = tool
+            if let width = currentTool.width {
+                let tool = PKInkingTool.init(.pen,
+                                             color: currentTool.color,
+                                             width: width)
+                
+                pkTool = tool
+            }
         case .eraser:
             let tool = PKEraserTool.init(.bitmap)
             pkTool = tool
         case .brush:
-            let tool = PKInkingTool.init(.marker,
-                                         color: currentTool.color,
-                                         width: currentTool.width)
-            pkTool = tool
+            if let width = currentTool.width {
+                let tool = PKInkingTool.init(.marker,
+                                             color: currentTool.color,
+                                             width: width)
+                
+                pkTool = tool
+            }
         case .neon:
             break
         case .pencil:
-            let tool = PKInkingTool.init(.pencil,
-                                         color: currentTool.color,
-                                         width: currentTool.width)
-            pkTool = tool
+            if let width = currentTool.width {
+                let tool = PKInkingTool.init(.pencil,
+                                             color: currentTool.color,
+                                             width: width)
+                
+                pkTool = tool
+            }
         case .objectEraser:
             let tool = PKEraserTool.init(.vector)
             pkTool = tool
@@ -98,17 +110,28 @@ class CanvasView: UIView {
         }
     }
     
-    var didBrushInit = false
+    var disposeBag = DisposeBag()
+    
+    func setBrush() {
+        guard let currentTool = currentTool else { return }
+        disposeBag = DisposeBag()
+        updateBrush()
+        currentTool.updates.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.updateBrush()
+            }
+        }.disposed(by: disposeBag)
+    }
 }
 
 extension CanvasView: PKCanvasViewDelegate {
     
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        let drawing = self.canvasView.drawing
-//        drawings.append(.init(strokes: drawing.strokes))
+        
     }
     
     func canvasViewDidBeginUsingTool(_ canvasView: PKCanvasView) {
+
     }
     
     func canvasViewDidEndUsingTool(_ canvasView: PKCanvasView) {

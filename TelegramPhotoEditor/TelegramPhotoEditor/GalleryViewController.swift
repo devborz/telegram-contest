@@ -40,11 +40,15 @@ class GalleryViewController: UIViewController {
         .init(numberOfCellsInARow: 1, spacing: 1)
     ]
     
+    var imageAnimator: PhotoEditorTransitionAnimator!
+    
     var layoutConfigIndex: Int = 2
     
     var layoutConfig: LayoutConfig {
         return allLayoutConfigs[layoutConfigIndex]
     }
+    
+    var selectedIndex: IndexPath?
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -130,8 +134,10 @@ class GalleryViewController: UIViewController {
     func reload() {
         var items: [PhotoPickerAssetCellViewModel] = []
         for i in 0..<(assets?.count ?? 0) {
-            if let asset = assets?.object(at: i) {
-                items.append(.init(asset: asset))
+            if i < (assets?.count ?? 0) {
+                if let asset = assets?.object(at: i) {
+                    items.append(.init(asset: asset))
+                }
             }
         }
         content = items
@@ -145,10 +151,12 @@ class GalleryViewController: UIViewController {
     }
     
     func editAsset(_ asset: PHAsset) {
+        imageAnimator = .init()
         let vc = PhotoEditorViewController()
         vc.asset = asset
+        vc.transitioningDelegate = self
         vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .overCurrentContext
         present(vc, animated: true)
     }
 }
@@ -157,6 +165,7 @@ extension GalleryViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
+        selectedIndex = indexPath
         let viewModel = content[indexPath.item]
         editAsset(viewModel.asset)
     }
@@ -181,6 +190,35 @@ extension GalleryViewController: AllowAccessViewControllerDelegate {
 extension GalleryViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         load()
+    }
+}
+
+extension GalleryViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        imageAnimator.delegate = self
+        imageAnimator.presenting = false
+        return imageAnimator
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        imageAnimator.delegate = self
+        imageAnimator.presenting = true
+        return imageAnimator
+    }
+}
+
+
+extension GalleryViewController: PhotoEditorTransitionDelegate {
+    
+    func frameForSelectedImageView() -> CGRect {
+        guard let cell = collectionView.cellForItem(at: selectedIndex!) as? PhotoPickerAssetCell else { return .zero }
+        return cell.convert(cell.assetImageView.frame, to: view)
+    }
+    
+    func selectedImageView() -> UIImageView {
+        guard let cell = collectionView.cellForItem(at: selectedIndex!) as? PhotoPickerAssetCell else { return UIImageView() }
+        return cell.assetImageView
     }
 }
 

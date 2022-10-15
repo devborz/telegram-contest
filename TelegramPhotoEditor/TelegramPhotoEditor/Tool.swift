@@ -7,6 +7,7 @@
 
 import UIKit
 import PencilKit
+import RxSwift
 
 enum ToolType: String {
     case brush
@@ -19,13 +20,30 @@ enum ToolType: String {
     case lasso
 }
 
+struct ToolTipType {
+    var name: String
+    var image: UIImage?
+}
+
 class Tool {
     
-    var type: ToolType
+    var type: ToolType {
+        didSet {
+            updates.onNext(self)
+        }
+    }
     
-    var width: CGFloat
+    var width: CGFloat? {
+        didSet {
+            updates.onNext(self)
+        }
+    }
     
-    var color: UIColor = .clear
+    var color: UIColor = .white {
+        didSet {
+            updates.onNext(self)
+        }
+    }
     
     var needTip: Bool {
         switch type {
@@ -36,21 +54,138 @@ class Tool {
         }
     }
     
-    init(type: ToolType, width: CGFloat) {
-        self.type = type
-        self.width = width
+    var tipTypeIndex: Int? = 0 {
+        didSet {
+            if let tipTypeIndex = tipTypeIndex {
+                switch type {
+                case .eraser, .blurEraser, .objectEraser:
+                    switch tipTypeIndex {
+                    case 2:
+                        type = .eraser
+                    case 1:
+                        type = .objectEraser
+                    case 0:
+                        type = .blurEraser
+                    default:
+                        break
+                    }
+                default:
+                    updates.onNext(self)
+                }
+            }
+        }
+    }
+    
+    var minWidth: CGFloat? {
         switch type {
         case .pen:
+            let inkType = PKInkingTool.InkType.pen
+            return inkType.validWidthRange.lowerBound
+        case .pencil:
+            let inkType = PKInkingTool.InkType.pencil
+            return inkType.validWidthRange.lowerBound
+        case .brush:
+            let inkType = PKInkingTool.InkType.marker
+            return inkType.validWidthRange.lowerBound
+        default:
+            return nil
+        }
+    }
+    
+    var maxWidth: CGFloat? {
+        switch type {
+        case .pen:
+            let inkType = PKInkingTool.InkType.pen
+            return inkType.validWidthRange.upperBound
+        case .pencil:
+            let inkType = PKInkingTool.InkType.pencil
+            return inkType.validWidthRange.upperBound
+        case .brush:
+            let inkType = PKInkingTool.InkType.marker
+            return inkType.validWidthRange.upperBound
+        default:
+            return nil
+        }
+    }
+    
+    var defaultWidth: CGFloat? {
+        switch type {
+        case .pen:
+            let inkType = PKInkingTool.InkType.pen
+            return inkType.defaultWidth
+        case .pencil:
+            let inkType = PKInkingTool.InkType.pencil
+            return inkType.defaultWidth
+        case .brush:
+            let inkType = PKInkingTool.InkType.marker
+            return inkType.defaultWidth
+        default:
+            return nil
+        }
+    }
+    
+    var updates: PublishSubject<Tool> = .init()
+    
+    var absolutePercentage: CGFloat? {
+        get {
+            guard let width = width, let maxWidth = maxWidth else { return nil }
+            return width / maxWidth
+        }
+    }
+    
+    var relativePercentage: CGFloat? {
+        get {
+            guard let width = width,
+                    let maxWidth = maxWidth, let minWidth = minWidth else { return nil }
+            return (width - minWidth) / (maxWidth - minWidth)
+        }
+        set(newValue) {
+            guard let newValue else { return }
+            guard newValue <= 1.0 && newValue >= 0 else { return }
+            guard let maxWidth = maxWidth, let minWidth = minWidth else { return }
+            self.width = (maxWidth - minWidth) * newValue + minWidth
+        }
+    }
+    
+    func getTipTypes() -> [ToolTipType] {
+        switch type {
+        case .brush, .pen, .pencil, .neon:
+            return [
+                ToolTipType(name: "Arrow", image: UIImage(named: "arrowTip")),
+                ToolTipType(name: "Round", image: UIImage(named: "roundTip")),
+            ]
+        case .eraser, .blurEraser, .objectEraser:
+            return [
+                ToolTipType(name: "Blur Eraser", image: UIImage(named: "blurTip")),
+                ToolTipType(name: "Object Eraser", image: UIImage(named: "xmarkTip")),
+                ToolTipType(name: "Eraser", image: UIImage(named: "roundTip")),
+            ]
+        default:
+            return []
+        }
+    }
+    
+    init(type: ToolType) {
+        self.type = type
+        switch type {
+        case .pen:
+            self.relativePercentage = 0.5
             self.color = .white
         case .brush:
+            self.relativePercentage = 0.5
             self.color = .yellow
         case .neon:
             self.color = .systemGreen
         case .pencil:
+            self.relativePercentage = 0.5
             self.color = .systemBlue
         default:
             break
         }
+    }
+    
+    var canModify: Bool {
+        return type != .lasso
     }
     
     func baseImage() -> UIImage? {

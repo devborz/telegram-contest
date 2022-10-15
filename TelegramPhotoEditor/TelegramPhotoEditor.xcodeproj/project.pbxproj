@@ -12,6 +12,8 @@
 		8D20C47E28F84CA200562A9C /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C47D28F84CA200562A9C /* Tool.swift */; };
 		8D20C48028F8697F00562A9C /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C47F28F8697F00562A9C /* MediaView.swift */; };
 		8D20C48228F86C0200562A9C /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C48128F86C0200562A9C /* CanvasView.swift */; };
+		8D20C48428F8E12D00562A9C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D20C48328F8E12D00562A9C /* Extensions.swift */; };
+		8D47EFC228F9AF090047DF0C /* TipTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D47EFC128F9AF090047DF0C /* TipTypeButton.swift */; };
 		8D5FBABD28F61F0A0009EA8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBABC28F61F0A0009EA8C /* AppDelegate.swift */; };
 		8D5FBABF28F61F0A0009EA8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBABE28F61F0A0009EA8C /* SceneDelegate.swift */; };
 		8D5FBAC128F61F0A0009EA8C /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAC028F61F0A0009EA8C /* GalleryViewController.swift */; };
@@ -22,12 +24,16 @@
 		8D5FBAD328F626D80009EA8C /* PhotoPickerAssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */; };
 		8D5FBAD528F627070009EA8C /* PhotoPickerAssetCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD428F627070009EA8C /* PhotoPickerAssetCellViewModel.swift */; };
 		8D5FBAD728F6276A0009EA8C /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5FBAD628F6276A0009EA8C /* Functions.swift */; };
+		8DB6151D28FAD09D00A02B29 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB6151C28FAD09D00A02B29 /* MenuController.swift */; };
+		8DB6151F28FB6D2300A02B29 /* PhotoEditorTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB6151E28FB6D2300A02B29 /* PhotoEditorTransitionAnimator.swift */; };
 		8DE033B628F6EAC400F3912F /* AllowAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */; };
 		8DE033C528F715C100F3912F /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */; };
-		8DE033C728F71D1900F3912F /* SegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C628F71D1900F3912F /* SegmentControl.swift */; };
+		8DE033C728F71D1900F3912F /* SegmentSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C628F71D1900F3912F /* SegmentSliderView.swift */; };
 		8DE033C928F76E0C00F3912F /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033C828F76E0C00F3912F /* VideoView.swift */; };
 		8DE033CB28F7798F00F3912F /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033CA28F7798F00F3912F /* Slider.swift */; };
 		8DE033CD28F7924700F3912F /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE033CC28F7924700F3912F /* BlurView.swift */; };
+		8DEC52D528FA0D9900D814A3 /* ColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEC52D428FA0D9900D814A3 /* ColorButton.swift */; };
+		8DEC52D728FA2D3500D814A3 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEC52D628FA2D3500D814A3 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +44,8 @@
 		8D20C47D28F84CA200562A9C /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
 		8D20C47F28F8697F00562A9C /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		8D20C48128F86C0200562A9C /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		8D20C48328F8E12D00562A9C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8D47EFC128F9AF090047DF0C /* TipTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipTypeButton.swift; sourceTree = "<group>"; };
 		8D5FBAB928F61F0A0009EA8C /* TelegramPhotoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramPhotoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5FBABC28F61F0A0009EA8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8D5FBABE28F61F0A0009EA8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,12 +58,16 @@
 		8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoPickerAssetCell.xib; sourceTree = "<group>"; };
 		8D5FBAD428F627070009EA8C /* PhotoPickerAssetCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerAssetCellViewModel.swift; sourceTree = "<group>"; };
 		8D5FBAD628F6276A0009EA8C /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		8DB6151C28FAD09D00A02B29 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		8DB6151E28FB6D2300A02B29 /* PhotoEditorTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorTransitionAnimator.swift; sourceTree = "<group>"; };
 		8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowAccessViewController.swift; sourceTree = "<group>"; };
 		8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
-		8DE033C628F71D1900F3912F /* SegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentControl.swift; sourceTree = "<group>"; };
+		8DE033C628F71D1900F3912F /* SegmentSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentSliderView.swift; sourceTree = "<group>"; };
 		8DE033C828F76E0C00F3912F /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		8DE033CA28F7798F00F3912F /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		8DE033CC28F7924700F3912F /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		8DEC52D428FA0D9900D814A3 /* ColorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorButton.swift; sourceTree = "<group>"; };
+		8DEC52D628FA2D3500D814A3 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +128,7 @@
 				8DE033C028F6EBA300F3912F /* Controllers */,
 				8DE033BF28F6EB9A00F3912F /* Resources */,
 				8D5FBAD628F6276A0009EA8C /* Functions.swift */,
+				8D20C48328F8E12D00562A9C /* Extensions.swift */,
 			);
 			path = TelegramPhotoEditor;
 			sourceTree = "<group>";
@@ -144,6 +157,8 @@
 				8DE033B428F6EAC400F3912F /* AllowAccessViewController.swift */,
 				8D5FBAC028F61F0A0009EA8C /* GalleryViewController.swift */,
 				8DE033C428F715C100F3912F /* PhotoEditorViewController.swift */,
+				8DB6151C28FAD09D00A02B29 /* MenuController.swift */,
+				8DB6151E28FB6D2300A02B29 /* PhotoEditorTransitionAnimator.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -153,13 +168,16 @@
 			children = (
 				8D5FBAD028F626D80009EA8C /* PhotoPickerAssetCell.swift */,
 				8D5FBAD128F626D80009EA8C /* PhotoPickerAssetCell.xib */,
-				8DE033C628F71D1900F3912F /* SegmentControl.swift */,
+				8DE033C628F71D1900F3912F /* SegmentSliderView.swift */,
 				8DE033C828F76E0C00F3912F /* VideoView.swift */,
 				8DE033CA28F7798F00F3912F /* Slider.swift */,
 				8DE033CC28F7924700F3912F /* BlurView.swift */,
 				8D20C47A28F84C6400562A9C /* ToolPickerView.swift */,
 				8D20C47F28F8697F00562A9C /* MediaView.swift */,
 				8D20C48128F86C0200562A9C /* CanvasView.swift */,
+				8D47EFC128F9AF090047DF0C /* TipTypeButton.swift */,
+				8DEC52D428FA0D9900D814A3 /* ColorButton.swift */,
+				8DEC52D628FA2D3500D814A3 /* Menu.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -306,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5FBAC128F61F0A0009EA8C /* GalleryViewController.swift in Sources */,
+				8DB6151D28FAD09D00A02B29 /* MenuController.swift in Sources */,
 				8D20C47B28F84C6400562A9C /* ToolPickerView.swift in Sources */,
 				8D20C48228F86C0200562A9C /* CanvasView.swift in Sources */,
 				8DE033CB28F7798F00F3912F /* Slider.swift in Sources */,
@@ -314,13 +333,18 @@
 				8DE033C528F715C100F3912F /* PhotoEditorViewController.swift in Sources */,
 				8D5FBAD528F627070009EA8C /* PhotoPickerAssetCellViewModel.swift in Sources */,
 				8DE033CD28F7924700F3912F /* BlurView.swift in Sources */,
+				8DEC52D528FA0D9900D814A3 /* ColorButton.swift in Sources */,
 				8D20C48028F8697F00562A9C /* MediaView.swift in Sources */,
 				8D5FBABD28F61F0A0009EA8C /* AppDelegate.swift in Sources */,
 				8D5FBABF28F61F0A0009EA8C /* SceneDelegate.swift in Sources */,
 				8DE033C928F76E0C00F3912F /* VideoView.swift in Sources */,
+				8DB6151F28FB6D2300A02B29 /* PhotoEditorTransitionAnimator.swift in Sources */,
+				8DEC52D728FA2D3500D814A3 /* Menu.swift in Sources */,
+				8D47EFC228F9AF090047DF0C /* TipTypeButton.swift in Sources */,
 				8D5FBAD728F6276A0009EA8C /* Functions.swift in Sources */,
+				8D20C48428F8E12D00562A9C /* Extensions.swift in Sources */,
 				8DE033B628F6EAC400F3912F /* AllowAccessViewController.swift in Sources */,
-				8DE033C728F71D1900F3912F /* SegmentControl.swift in Sources */,
+				8DE033C728F71D1900F3912F /* SegmentSliderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +495,7 @@
 				DEVELOPMENT_TEAM = T5LKB74WC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TelegramPhotoEditor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Photo Editor";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo and video";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -502,6 +527,7 @@
 				DEVELOPMENT_TEAM = T5LKB74WC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TelegramPhotoEditor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Photo Editor";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo and video";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
