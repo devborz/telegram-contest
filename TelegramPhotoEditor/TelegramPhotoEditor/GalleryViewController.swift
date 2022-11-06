@@ -80,6 +80,11 @@ class GalleryViewController: UIViewController {
   
         let gesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
         collectionView.addGestureRecognizer(gesture)
+        
+        UIFont.familyNames.forEach({ familyName in
+                    let fontNames = UIFont.fontNames(forFamilyName: familyName)
+                    print(familyName, fontNames)
+                })
     }
     
     var checkedPersmissions = false

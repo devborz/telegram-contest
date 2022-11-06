@@ -11,12 +11,12 @@ import RxSwift
 
 enum ToolType: String {
     case brush
-    case neon
+//    case neon
     case pen
     case pencil
     case eraser
     case objectEraser
-    case blurEraser
+//    case blurEraser
     case lasso
 }
 
@@ -47,7 +47,10 @@ class Tool {
     
     var needTip: Bool {
         switch type {
-        case .blurEraser, .eraser, .objectEraser, .lasso:
+        case .eraser,
+//                .blurEraser,
+                .objectEraser,
+                .lasso:
             return false
         default:
             return true
@@ -58,14 +61,16 @@ class Tool {
         didSet {
             if let tipTypeIndex = tipTypeIndex {
                 switch type {
-                case .eraser, .blurEraser, .objectEraser:
+                case .eraser,
+//                        .blurEraser,
+                        .objectEraser:
                     switch tipTypeIndex {
-                    case 2:
-                        type = .eraser
+//                    case 2:
+//                        type = .blurEraser
                     case 1:
                         type = .objectEraser
                     case 0:
-                        type = .blurEraser
+                        type = .eraser
                     default:
                         break
                     }
@@ -149,16 +154,21 @@ class Tool {
     
     func getTipTypes() -> [ToolTipType] {
         switch type {
-        case .brush, .pen, .pencil, .neon:
+        case .brush, .pen, .pencil:
+            if #available(iOS 14, *) {
+                return [
+                    ToolTipType(name: "Round", image: UIImage(named: "roundTip")),
+                    ToolTipType(name: "Arrow", image: UIImage(named: "arrowTip")),
+                ]
+            } else {
+                return [
+                    ToolTipType(name: "Round", image: UIImage(named: "roundTip"))
+                ]
+            }
+        case .eraser, .objectEraser:
             return [
-                ToolTipType(name: "Arrow", image: UIImage(named: "arrowTip")),
-                ToolTipType(name: "Round", image: UIImage(named: "roundTip")),
-            ]
-        case .eraser, .blurEraser, .objectEraser:
-            return [
-                ToolTipType(name: "Blur Eraser", image: UIImage(named: "blurTip")),
-                ToolTipType(name: "Object Eraser", image: UIImage(named: "xmarkTip")),
                 ToolTipType(name: "Eraser", image: UIImage(named: "roundTip")),
+                ToolTipType(name: "Object Eraser", image: UIImage(named: "xmarkTip"))
             ]
         default:
             return []
@@ -174,8 +184,6 @@ class Tool {
         case .brush:
             self.relativePercentage = 0.5
             self.color = .yellow
-        case .neon:
-            self.color = .systemGreen
         case .pencil:
             self.relativePercentage = 0.5
             self.color = .systemBlue

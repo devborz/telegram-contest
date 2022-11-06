@@ -16,10 +16,10 @@ protocol ItemViewDelegate: AnyObject {
 
 class Menu: UIView {
     
-    weak var menuController: MenuController?
+    weak var menuController: MenuViewController?
     
     struct Action {
-        var name: String
+        var title: String
         var image: UIImage?
         var handler: ((Action) -> ())?
     }
@@ -49,7 +49,7 @@ class Menu: UIView {
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
             label.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             label.textColor = .white
-            label.text = action.name
+            label.text = action.title
             
             imageView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(imageView)

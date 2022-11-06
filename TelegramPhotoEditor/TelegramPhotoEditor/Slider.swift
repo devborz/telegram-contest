@@ -23,7 +23,7 @@ class Slider: UIView {
     lazy var thumbView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 20
         view.clipsToBounds = true
         return view
     }()
@@ -51,19 +51,17 @@ class Slider: UIView {
         thumbBottomConstraint = thumbViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
         thumbBottomConstraint.isActive = true
         thumbViewContainer.heightAnchor.constraint(equalTo:
-                                                thumbViewContainer.widthAnchor, constant: -10).isActive = true
+                                                thumbViewContainer.widthAnchor).isActive = true
         
         thumbView.translatesAutoresizingMaskIntoConstraints = false
         thumbViewContainer.addSubview(thumbView)
         thumbView.topAnchor.constraint(equalTo: thumbViewContainer.topAnchor).isActive = true
-        thumbView.leftAnchor.constraint(equalTo: thumbViewContainer.leftAnchor,
-                                        constant: 5).isActive = true
-        thumbView.rightAnchor.constraint(equalTo: thumbViewContainer.rightAnchor,
-                                         constant: -5).isActive = true
+        thumbView.leftAnchor.constraint(equalTo: thumbViewContainer.leftAnchor).isActive = true
+        thumbView.rightAnchor.constraint(equalTo: thumbViewContainer.rightAnchor).isActive = true
         thumbView.bottomAnchor.constraint(equalTo: thumbViewContainer.bottomAnchor).isActive = true
         let panGesture = UIPanGestureRecognizer(target: self,
                                                 action: #selector(handlePanGesture(_:)))
-        thumbViewContainer.addGestureRecognizer(panGesture)
+        addGestureRecognizer(panGesture)
         setNeedsDisplay()
         backgroundColor = .clear
     }
@@ -79,6 +77,9 @@ class Slider: UIView {
         context.setLineWidth(1)
         context.setStrokeColor(UIColor.init(white: 1, alpha: 0.5).cgColor)
         context.move(to: .init(x: 5, y: 15))
+        context.addArc(center: .init(x: 20, y: 15),
+                       radius: 15,
+                       startAngle: .pi, endAngle: 0, clockwise: false)
         context.addLine(to: .init(x: rect.width - 5, y: 15))
         context.addLine(to: .init(x: rect.width / 2, y: rect.height))
         context.addLine(to: .init(x: 5, y: 15))

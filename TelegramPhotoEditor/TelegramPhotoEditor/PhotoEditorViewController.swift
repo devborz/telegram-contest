@@ -8,8 +8,18 @@
 import UIKit
 import Photos
 import Lottie
+import PencilKit
+
+enum Mode {
+    case draw, text
+}
 
 class PhotoEditorViewController: UIViewController {
+    
+    enum Change {
+        case drawing(PKDrawing)
+        case text(TextViewContainer)
+    }
     
     var bottomSegment: SegmentSliderView!
     
@@ -33,36 +43,55 @@ class PhotoEditorViewController: UIViewController {
     
     let scrollView = UIScrollView()
     
-    let topBlurView = BlurView()
+    let topBlurView = BlurGradientView(position: .bottom)
     
-    let topMiddleBlurView = BlurView()
-    
-    let bottomBlurView = BlurView()
-    
-    let bottomMiddleBlurView = BlurView()
+    let bottomBlurView = BlurGradientView(position: .top)
     
     var toolPicker = ToolPickerView()
     
     let tipTypeButton = TipTypeButton()
     
-    var mediaView: MediaView!
+    var mediaView: MediaView! {
+        didSet {
+            guard let mediaView else { return }
+            mediaView.mode = self.currentMode
+            mediaView.canvasView.delegate = self
+            mediaView.textEditingView.textEditBar.delegate = self
+            mediaView.textEditingView.delegate = self
+            changes.append(.drawing(mediaView.canvasView.currentDrawingCopy()))
+        }
+    }
     
     let backToCancelAnimation = LottieAnimationView(name: "backToCancel")
      
     let addButtonBlurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
     
+    var fontSlider = Slider(frame: .zero)
+    
     let colorButton = ColorButton()
+    
+    let textEditBar = TextEditBarView()
+    
+    let textDoneButton = UIButton()
+    
+    let textCancelButton = UIButton()
+    
+    var fontSliderLeftConstraint: NSLayoutConstraint!
+    
+    var fontSliderCenterConstraint: NSLayoutConstraint!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    enum Mode {
-        case draw, text
-    }
-    
     var hasChanges: Bool {
-        return false
+        if changes.count == 1,
+           case .drawing(_) = changes.first {
+            return false
+        } else if changes.count == 0 {
+            return false
+        }
+        return true
     }
     
     var currentMode: Mode = .draw {
@@ -70,6 +99,14 @@ class PhotoEditorViewController: UIViewController {
             if currentMode != oldValue {
                 setMode()
             }
+        }
+    }
+    
+    var changes: [Change] = [] {
+        didSet {
+            clearAllButton.isEnabled = hasChanges
+            undoButton.isEnabled = hasChanges
+            downloadButton.isEnabled = hasChanges
         }
     }
     
@@ -118,17 +155,9 @@ class PhotoEditorViewController: UIViewController {
     
         topBlurView.blurRadius = 5
         topBlurView.colorTint = .clear
-        
-        topMiddleBlurView.blurRadius = 10
-        topMiddleBlurView.colorTint = .clear
-        topMiddleBlurView.alpha = 0.3
 
         bottomBlurView.blurRadius = 5
         bottomBlurView.colorTint = .clear
-        
-        bottomMiddleBlurView.blurRadius = 10
-        bottomMiddleBlurView.colorTint = .clear
-        bottomMiddleBlurView.alpha = 0.3
         
         bottomSegment = .init(["Draw", "Text"])
         bottomSegment.delegate = self
@@ -216,18 +245,33 @@ class PhotoEditorViewController: UIViewController {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isScrollEnabled = false
         scrollView.backgroundColor = .black
+        scrollView.keyboardDismissMode = .interactive
+        scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
     
         toolPicker.delegate = self
         
         tipTypeButton.alpha = 0
         if #available(iOS 14, *) {
-            
+
         } else {
             tipTypeButton.addTarget(self, action: #selector(tipTypeButtonTapped),
                                     for: .touchUpInside)
         }
         
+        textEditBar.delegate = self
+        textEditBar.isHidden = true
+        
         colorButton.tapHandler = colorButtonTapped
+        
+        textDoneButton.setTitle("Done", for: .normal)
+        textDoneButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        textCancelButton.setTitle("Cancel", for: .normal)
+        textDoneButton.addTarget(self, action: #selector(textDoneButtonTapped),
+                                 for: .touchUpInside)
+        
+        
+        fontSlider.alpha = 0
+        fontSlider.delegate = self
     }
     
     func layout() {
@@ -252,14 +296,12 @@ class PhotoEditorViewController: UIViewController {
                                             constant: -10).isActive = true
         cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor,
                                            constant: 10).isActive = true
-//        cancelButton.isHidden = true
         
         backToCancelAnimation.heightAnchor.constraint(equalToConstant: 33).isActive = true
         backToCancelAnimation.widthAnchor.constraint(equalToConstant: 33).isActive = true
         backToCancelAnimation.centerXAnchor.constraint(equalTo: cancelButton.centerXAnchor).isActive = true
         backToCancelAnimation.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
         backToCancelAnimation.isHidden = true
-//        backToCancelAnimation.backgroundColor = .red
         
         backButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backButton)
@@ -282,14 +324,14 @@ class PhotoEditorViewController: UIViewController {
         bottomSegment.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bottomSegment)
         bottomSegment.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        bottomSegment.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -10).isActive = true
         bottomSegment.leftAnchor.constraint(equalTo: view.leftAnchor,
                                             constant: 60).isActive = true
         bottomSegment.rightAnchor.constraint(equalTo: view.rightAnchor,
                                              constant: -60).isActive = true
         bottomSegment.topAnchor.constraint(equalTo: bottomBlurView.topAnchor,
                                            constant: 1).isActive = true
+        bottomSegment.centerYAnchor
+            .constraint(equalTo: downloadButton.centerYAnchor).isActive = true
         
         toolPicker.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toolPicker)
@@ -314,6 +356,22 @@ class PhotoEditorViewController: UIViewController {
         topView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         topView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         topView.bottomAnchor.constraint(equalTo: topBlurView.bottomAnchor).isActive = true
+        
+        textDoneButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(textDoneButton)
+        textDoneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        textDoneButton.rightAnchor.constraint(equalTo: view.rightAnchor,
+                                              constant: -10).isActive = true
+        textDoneButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        textDoneButton.alpha = 0
+        
+        textCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(textCancelButton)
+        textCancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        textCancelButton.leftAnchor.constraint(equalTo: view.leftAnchor,
+                                               constant: 10).isActive = true
+        textCancelButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        textCancelButton.alpha = 0
         
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         topView.addSubview(undoButton)
@@ -375,6 +433,44 @@ class PhotoEditorViewController: UIViewController {
                                              constant: 10).isActive = true
         colorButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                             constant: -60).isActive = true
+        
+        textEditBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(textEditBar)
+        textEditBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        textEditBar.leftAnchor.constraint(equalTo: colorButton.rightAnchor,
+                                          constant: 10).isActive = true
+        textEditBar.rightAnchor.constraint(equalTo: addButton.leftAnchor,
+                                          constant: -10).isActive = true
+        textEditBar.centerYAnchor.constraint(equalTo: colorButton.centerYAnchor).isActive = true
+        
+        fontSlider.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(fontSlider)
+        fontSliderCenterConstraint = fontSlider.centerYAnchor.constraint(equalTo: view.topAnchor)
+        fontSliderCenterConstraint.constant = view.bounds.height / 2
+        fontSliderCenterConstraint.isActive = true
+        fontSliderLeftConstraint = fontSlider.leftAnchor.constraint(equalTo: view.leftAnchor,
+                                                                      constant: -20)
+        fontSliderLeftConstraint.isActive = true
+        fontSlider.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        fontSlider.heightAnchor.constraint(equalTo: view.heightAnchor,
+                                            multiplier: 0.35).isActive = true
+    }
+    
+    @objc
+    func textDoneButtonTapped() {
+        mediaView?.textEditingView.handleTap()
+    }
+    
+    @objc
+    func textCancelButtoNTapped() {
+        switch asset.mediaType {
+        case .video:
+            break
+        case .image:
+            break
+        default:
+            break
+        }
     }
     
     func setupMediaViews() {
@@ -395,17 +491,21 @@ class PhotoEditorViewController: UIViewController {
         let scale = getScale(size)
         let scaledSize = CGSize(width: size.width * scale,
                                 height: size.height * scale)
-        mediaView = .init(frame: .init(origin: .zero, size: scaledSize),
-                          media: .image(image))
+        mediaView = .init(frame: .init(origin: .zero, size: view.frame.size),
+                          media: .image(image), contentSize: scaledSize)
         scrollView.addSubview(mediaView)
-        scrollView.contentSize = scaledSize
+        scrollView.contentSize = view.frame.size
         
         centerMediaView()
         scrollView.minimumZoomScale = 1
         scrollView.zoomScale = 1
         scrollView.maximumZoomScale = 5
-        mediaView.canvasView.currentTool = toolPicker.currentTool
+        mediaView.setDrawingTool(toolPicker.currentTool)
     }
+    
+    var videoSize: CGSize?
+    
+    var videoAsset: AVAsset?
     
     func setupVideo() {
         getAVAsset(asset: asset) { [weak self] avasset in
@@ -413,20 +513,24 @@ class PhotoEditorViewController: UIViewController {
                 guard let strongSelf = self,
                       let avasset = avasset,
                       let size = getVideoSize(asset: avasset) else { return }
+                strongSelf.videoSize = size
+                strongSelf.videoAsset = avasset
                 let scale = strongSelf.getScale(size)
                 let scaledSize = CGSize(width: size.width * scale,
                                         height: size.height * scale)
-                strongSelf.mediaView = .init(frame: .init(origin: .zero, size: scaledSize),
-                                             media: .video(avasset))
+                strongSelf.mediaView = .init(frame: .init(origin: .zero,
+                                                          size: strongSelf.view.frame.size),
+                                             media: .video(avasset),
+                                             contentSize: scaledSize)
                 
                 strongSelf.scrollView.addSubview(strongSelf.mediaView)
-                strongSelf.scrollView.contentSize = scaledSize
+                strongSelf.scrollView.contentSize = strongSelf.view.frame.size
                 
                 strongSelf.centerMediaView()
                 strongSelf.scrollView.minimumZoomScale = 1
                 strongSelf.scrollView.zoomScale = 1
                 strongSelf.scrollView.maximumZoomScale = 5
-                strongSelf.mediaView.canvasView.currentTool = strongSelf.toolPicker.currentTool
+                strongSelf.mediaView.setDrawingTool(strongSelf.toolPicker.currentTool)
                 strongSelf.mediaView.play()
             }
         }
@@ -457,7 +561,183 @@ class PhotoEditorViewController: UIViewController {
     
     @objc
     func downloadButtonTapped() {
-        dismiss(animated: true)
+        guard let mediaView = mediaView else { return }
+        let rect = CGRect(origin: .zero, size: mediaView.canvasView.canvasView.frame.size)
+        let picture = mediaView.canvasView.takeScreenshot()
+        let text = mediaView.textEditingView.takeScreenshot()
+        switch asset.mediaType {
+        case .image:
+            guard let image = mediaView.imageView.image else { return }
+            let imageSize = image.size
+            let contentLayer = CALayer()
+            contentLayer.frame = .init(origin: .zero, size: imageSize)
+            contentLayer.contents = image.cgImage
+            contentLayer.contentsGravity = .resizeAspectFill
+            let paintLayer: CALayer = CALayer()
+            paintLayer.frame = .init(origin: .zero, size: imageSize)
+            paintLayer.contentsGravity = .resizeAspectFill
+            let paintImage = picture
+            paintLayer.contents = paintImage.cgImage
+            let textLayer = CALayer()
+            textLayer.frame = .init(origin: .zero, size: imageSize)
+            let textImage = text
+            textLayer.contents = textImage.cgImage
+            textLayer.contentsGravity = .resizeAspectFill
+            
+            let outputLayer = CALayer()
+            outputLayer.frame = CGRect(origin: .zero, size: imageSize)
+            outputLayer.addSublayer(contentLayer)
+            outputLayer.addSublayer(paintLayer)
+            outputLayer.addSublayer(textLayer)
+            
+            let result = outputLayer.renderImage()
+//            return result
+            print()
+        default:
+            guard let asset = videoAsset as? AVURLAsset, let videoSize else { return }
+            let composition = AVMutableComposition()
+            guard
+              let compositionTrack = composition.addMutableTrack(
+                withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid),
+              let assetTrack = asset.tracks(withMediaType: .video).first
+              else {
+                print("Something is wrong with the asset.")
+                return
+            }
+
+            do {
+              let timeRange = CMTimeRange(start: .zero, duration: asset.duration)
+              try compositionTrack.insertTimeRange(timeRange, of: assetTrack, at: .zero)
+              
+              if let audioAssetTrack = asset.tracks(withMediaType: .audio).first,
+                let compositionAudioTrack = composition.addMutableTrack(
+                  withMediaType: .audio,
+                  preferredTrackID: kCMPersistentTrackID_Invalid) {
+                try compositionAudioTrack.insertTimeRange(
+                  timeRange,
+                  of: audioAssetTrack,
+                  at: .zero)
+              }
+            } catch {
+              print(error)
+              return
+            }
+            
+            compositionTrack.preferredTransform = assetTrack.preferredTransform
+            
+            let videoFrame = CGRect(origin: .zero, size: videoSize)
+            let videoLayer = CALayer()
+            var videoLayerFrame = videoFrame
+            videoLayerFrame.origin.y = videoSize.height - videoLayerFrame.origin.y - videoLayerFrame.height
+            
+            videoLayer.frame = videoLayerFrame
+            videoLayer.masksToBounds = true
+            
+            let paintLayer: CALayer = CALayer()
+            paintLayer.frame = .init(origin: .zero, size: videoSize)
+            paintLayer.contentsGravity = .resizeAspectFill
+            let paintImage = picture
+            paintLayer.contents = paintImage.cgImage
+            
+            let textLayer = CALayer()
+            textLayer.frame = .init(origin: .zero, size: videoSize)
+            let textImage = text
+            textLayer.contents = textImage.cgImage
+            textLayer.contentsGravity = .resizeAspectFill
+            
+            let outputLayer = CALayer()
+            outputLayer.frame = CGRect(origin: .zero, size: videoSize)
+            outputLayer.addSublayer(videoLayer)
+            outputLayer.addSublayer(paintLayer)
+            outputLayer.addSublayer(textLayer)
+            
+            let videoComposition = AVMutableVideoComposition()
+            let isPortrait = isPortrait(from: assetTrack.preferredTransform)
+            let renderSize: CGSize
+            
+            if isPortrait {
+              renderSize = CGSize(
+                width: assetTrack.naturalSize.height,
+                height: assetTrack.naturalSize.width)
+            } else {
+              renderSize = assetTrack.naturalSize
+            }
+            
+            videoComposition.renderSize = videoSize
+            videoComposition.frameDuration = CMTime(value: 1, timescale: 30)
+            videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(
+              postProcessingAsVideoLayer: videoLayer,
+              in: outputLayer)
+
+            let instruction = AVMutableVideoCompositionInstruction()
+            instruction.timeRange = CMTimeRange(
+              start: .zero,
+              duration: composition.duration)
+            videoComposition.instructions = [instruction]
+            let layerInstruction = compositionLayerInstruction(
+                for: compositionTrack,
+                assetTrack: assetTrack)
+            
+            var ptr = assetTrack.preferredTransform
+            
+            let yScale = videoSize.height / renderSize.height
+            let xScale = videoSize.width / renderSize.width
+            
+            ptr.tx = ptr.tx == 0 ? 0 : renderSize.width
+            ptr.ty = ptr.ty == 0 ? 0 : renderSize.height
+            
+            let bugFixTransform = ptr.concatenating(.init(scaleX: xScale,
+                                                          y: yScale))
+            
+            layerInstruction.setTransform(bugFixTransform, at: .zero)
+            
+            instruction.layerInstructions = [layerInstruction]
+
+            guard let export = AVAssetExportSession(
+              asset: composition,
+              presetName: AVAssetExportPreset1280x720)
+              else {
+                print("Cannot create export session.")
+                return
+            }
+            
+            let videoName = UUID().uuidString
+            var exportURL: URL = URL(fileURLWithPath: NSTemporaryDirectory())
+              .appendingPathComponent(videoName)
+              .appendingPathExtension("mov")
+            export.videoComposition = videoComposition
+            export.outputFileType = .mov
+            export.outputURL = exportURL
+
+
+            export.exportAsynchronously { [weak self] in
+              DispatchQueue.main.async {
+                switch export.status {
+                case .completed:
+                    break
+                default:
+                  print("Something went wrong during export.")
+                  print(export.error ?? "unknown error")
+                  break
+                }
+              }
+            }
+        }
+    }
+    
+    private func compositionLayerInstruction(for track: AVCompositionTrack, assetTrack: AVAssetTrack) -> AVMutableVideoCompositionLayerInstruction {
+        let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
+//        let transform = assetTrack.preferredTransform
+//        instruction.setTransform(transform, at: .zero)
+
+        return instruction
+    }
+    
+    private func isPortrait(from transform: CGAffineTransform) -> Bool {
+        if transform.a == 0 && abs(transform.b) == 1.0 && abs(transform.c) == 1.0 && transform.d == 0 {
+            return true
+        }
+        return false
     }
     
     @objc
@@ -479,38 +759,62 @@ class PhotoEditorViewController: UIViewController {
         }
     }
     
+    var shouldSaveNextCanvasChange = true
+    
     @objc
     func undoButtonTapped() {
-        
+        guard hasChanges, let mediaView,
+              let lastChange = changes.popLast() else { return }
+        switch lastChange {
+        case .text(let textView):
+            mediaView.textEditingView.removeTextView(textView)
+        case .drawing:
+            if let drawingBeforeIndex = changes.lastIndex(where: { value in
+                if case .drawing = value {
+                    return true
+                }
+                return false
+            }), case let .drawing(drawingBefore) = changes[drawingBeforeIndex] {
+                removedChangeIndex = drawingBeforeIndex
+                changes.remove(at: drawingBeforeIndex)
+                mediaView.canvasView.lastChangeDoneProgrammaticaly = true
+                mediaView.canvasView.undo(drawingBefore)
+            }
+        }
     }
+    
+    var removedChangeIndex: Int?
     
     @objc
     func clearAllButtonTapped() {
-        
+        guard hasChanges, let mediaView else { return }
+        changes = []
+        mediaView.canvasView.clearAll()
+        mediaView.textEditingView.clearAll()
     }
     
     @objc
     func addButtonTapped() {
         let menu = Menu([
-            .init(name: "Rectangle", image: UIImage(named: "shapeRectangle")) { [weak self] _ in
+            .init(title: "Rectangle", image: UIImage(named: "shapeRectangle")) { [weak self] _ in
                 self?.handleAddShape("Rectangle")
             },
-            .init(name: "Ellipse", image: UIImage(named: "shapeEllipse")) { [weak self] _ in
+            .init(title: "Ellipse", image: UIImage(named: "shapeEllipse")) { [weak self] _ in
                 self?.handleAddShape("Ellipse")
             },
-            .init(name: "Bubble", image: UIImage(named: "shapeBubble")) { [weak self] _ in
+            .init(title: "Bubble", image: UIImage(named: "shapeBubble")) { [weak self] _ in
                 self?.handleAddShape("Bubble")
             },
-            .init(name: "Star", image: UIImage(named: "shapeStar")) { [weak self] _ in
+            .init(title: "Star", image: UIImage(named: "shapeStar")) { [weak self] _ in
                 self?.handleAddShape("Star")
             },
-            .init(name: "Arrow", image: UIImage(named: "shapeArrow")) { [weak self] _ in
+            .init(title: "Arrow", image: UIImage(named: "shapeArrow")) { [weak self] _ in
                 self?.handleAddShape("Arrow")
             }
         ])
         menu.frame.origin.x = addButton.frame.maxX - 150
         menu.frame.origin.y = addButton.frame.origin.y - 10 - menu.frame.height
-        let vc = MenuController(menu: menu)
+        let vc = MenuViewController(menu: menu)
         present(vc, animated: false)
     }
     
@@ -518,19 +822,22 @@ class PhotoEditorViewController: UIViewController {
     func tipTypeButtonTapped() {
         let tool = toolPicker.currentTool
         let tips: [ToolTipType] = tool.getTipTypes()
-        if #available(iOS 14, *) {
-            var actions: [UIAction] = []
-            for i in 0..<tips.count {
-                actions.append(UIAction(title: tips[i].name,
-                                        image: tips[i].image) { [weak self] _ in
-                    tool.tipTypeIndex = i
-                    self?.tipTypeButton.setTitle(tips[i].name, for: .normal)
-                    self?.tipTypeButton.setImage(tips[i].image, for: .normal)
-                })
-            }
-            self.tipTypeButton.menu = UIMenu(children: actions)
-            self.tipTypeButton.showsMenuAsPrimaryAction = true
+        var actions: [Menu.Action] = []
+        for i in 0..<tips.count {
+            actions.append(Menu.Action(title: tips[i].name,
+                                  image: tips[i].image) { [weak self] _ in
+                tool.tipTypeIndex = i
+                self?.tipTypeButton.setTitle(tips[i].name, for: .normal)
+                self?.tipTypeButton.setImage(tips[i].image, for: .normal)
+            })
         }
+        let menu = Menu(actions)
+        let vc = MenuViewController(menu: menu)
+        menu.frame.origin.x = tipTypeButton.frame.maxX - 150
+        menu.frame.origin.y = tipTypeButton.frame.origin.y - 10 - menu.frame.height
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: false)
     }
     
     @objc
@@ -543,7 +850,7 @@ class PhotoEditorViewController: UIViewController {
     func colorButtonTapped() {
         let currentTool = toolPicker.currentTool
         switch currentTool.type {
-        case .brush, .neon, .pencil, .pen:
+        case .brush, .pencil, .pen:
             break
         default:
             return
@@ -557,7 +864,20 @@ class PhotoEditorViewController: UIViewController {
     }
     
     func setMode() {
-        
+        switch currentMode {
+        case .draw:
+            scrollView.pinchGestureRecognizer?.isEnabled = true
+            textEditBar.isHidden = true
+            toolPicker.isHidden = false
+            scrollView.isScrollEnabled = true
+        case .text:
+            textEditBar.isHidden = false
+            toolPicker.isHidden = true
+            scrollView.zoomScale = 1
+            scrollView.pinchGestureRecognizer?.isEnabled = false
+            mediaView?.textEditingView.createNewTextView()
+        }
+        mediaView?.mode = currentMode
     }
     
     func handleAddShape(_ shapeName: String) {
@@ -575,13 +895,13 @@ class PhotoEditorViewController: UIViewController {
 extension PhotoEditorViewController: UIScrollViewDelegate {
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        guard mediaView?.mode == .draw else { return }
         centerMediaView()
-        mediaView?.canvasView.setBrush()
         zoomOutButton.isHidden = scrollView.zoomScale <= scrollView.minimumZoomScale
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return mediaView
+        return currentMode == .draw ? mediaView : nil
     }
 
 }
@@ -620,7 +940,12 @@ extension PhotoEditorViewController: ToolPickerViewDelegate {
                 self.downloadButton.transform = .identity
                     .translatedBy(x: 10, y: 0)
                     .scaledBy(x: 0.01, y: 0.01)
-                self.tipTypeButton.alpha = 1
+                let tips = tool.getTipTypes()
+                if tips.count <= 1 {
+                    self.tipTypeButton.alpha = 0
+                } else {
+                    self.tipTypeButton.alpha = 1
+                }
             }
             if let percentage = tool.relativePercentage {
                 self.bottomSegment.makeSlider(percentage: percentage)
@@ -677,16 +1002,16 @@ extension PhotoEditorViewController: ToolPickerViewDelegate {
                     self?.tipTypeButton.setImage(tips[i].image, for: .normal)
                 })
             }
-            self.tipTypeButton.menu = UIMenu(children: actions)
+            self.tipTypeButton.menu = UIMenu(children: actions.reversed())
             self.tipTypeButton.showsMenuAsPrimaryAction = true
-            self.tipTypeButton.setTitle(tips[currentTipIndex].name, for: .normal)
-            self.tipTypeButton.setImage(tips[currentTipIndex].image, for: .normal)
         }
+        tipTypeButton.setTitle(tips[currentTipIndex].name, for: .normal)
+        tipTypeButton.setImage(tips[currentTipIndex].image, for: .normal)
     }
     
     func didChangeTool(_ pickerView: ToolPickerView, tool: Tool) {
         colorButton.color = tool.color
-        mediaView?.canvasView.currentTool = tool
+        mediaView?.setDrawingTool(tool)
     }
     
 }
@@ -700,6 +1025,141 @@ extension PhotoEditorViewController: UIColorPickerViewControllerDelegate {
         colorButton.color = color
         mediaView?.canvasView.setBrush()
     }
-    
 
+}
+
+extension PhotoEditorViewController: TextEditBarViewDelegate {
+    func didSelectAlignment(_ view: TextEditBarView, alignment: NSTextAlignment) {
+        if view == self.textEditBar {
+            mediaView?.textEditingView.textEditBar.alignment = alignment
+        } else {
+            textEditBar.alignment = alignment
+        }
+        mediaView?.textEditingView.currentTextViewContainer?.alignment = alignment
+    }
+    
+    func didSelectFilling(_ view: TextEditBarView, filling: TextFilling) {
+        if view == self.textEditBar {
+            mediaView?.textEditingView.textEditBar.filling = filling
+        } else {
+            textEditBar.filling = filling
+        }
+        mediaView?.textEditingView.currentTextViewContainer?.filling = filling
+    }
+    
+    func didSelectFont(_ view: TextEditBarView, font: Font, index: Int) {
+        if view == self.textEditBar {
+            mediaView?.textEditingView.textEditBar.setCurrentFont(index, scrolls: true)
+        } else {
+            textEditBar.setCurrentFont(index, scrolls: true)
+        }
+        mediaView?.textEditingView.currentTextViewContainer?.setFont(font)
+    }
+    
+}
+
+extension PhotoEditorViewController: CanvasViewDelegate {
+    
+    func canvasViewDrawingDidChange(_ canvasView: CanvasView, drawing: PKDrawing) {
+        if let removedChangeIndex {
+            changes.insert(.drawing(drawing), at: removedChangeIndex)
+            self.removedChangeIndex = nil
+        } else {
+            changes.append(.drawing(drawing))
+        }
+    }
+    
+}
+
+extension PhotoEditorViewController: TextEditingViewDelegate {
+    
+    func textViewAdded(_ editView: TextEditingView, textView: TextViewContainer) {
+        changes.append(.text(textView))
+    }
+    
+    func textViewRemoved(_ editView: TextEditingView, textView: TextViewContainer) {
+        for i in 0..<changes.count {
+            if case let .text(_textView) = changes[i],
+                _textView == textView {
+                changes.remove(at: i)
+                return
+            }
+        }
+    }
+    
+    func textViewSelected(_ editView: TextEditingView, textView: TextViewContainer?) {
+        if let textView {
+            textEditBar.isHidden = false
+            textEditBar.filling = textView.filling
+            textEditBar.alignment = textView.alignment
+            editView.textEditBar.filling = textView.filling
+            editView.textEditBar.alignment = textView.alignment
+            guard let index = textEditBar.fonts.firstIndex(where: { value in
+                return value.name == textView.font.name
+            }) else { return }
+            textEditBar.setCurrentFont(index, scrolls: true)
+            editView.textEditBar.setCurrentFont(index, scrolls: true)
+        } else {
+            textEditBar.isHidden = true
+        }
+    }
+    
+    func didShowKeyboard(_ editView: TextEditingView, keyboardHeight: CGFloat) {
+        guard let statusBarHeight = view
+            .window?
+            .windowScene?
+            .statusBarManager?.statusBarFrame.height else { return }
+        scrollView.contentOffset.y = -statusBarHeight + keyboardHeight / 2
+        topView.alpha = 0
+        topBlurView.alpha = 0
+        textDoneButton.alpha = 1
+        textCancelButton.alpha = 1
+        fontSlider.alpha = 1
+        let centerConstraintValue = (view.frame.height - statusBarHeight - keyboardHeight - 50) / 2 + statusBarHeight + 50
+        fontSliderCenterConstraint.constant = centerConstraintValue
+        view.layoutIfNeeded()
+    }
+    
+    func didHideKeyboard(_ editView: TextEditingView) {
+        scrollView.contentOffset = .zero
+        topView.alpha = 1
+        topBlurView.alpha = 1
+        textDoneButton.alpha = 0
+        textCancelButton.alpha = 0
+        fontSlider.alpha = 0
+        let centerConstraintValue = view.frame.height / 2
+        fontSliderCenterConstraint.constant = centerConstraintValue
+        view.layoutIfNeeded()
+    }
+    
+    func textViewDidStartEditing(_ editView: TextEditingView, textView: TextViewContainer) {
+        textEditBar.isHidden = true
+        fontSlider.setValue(textView.fontSize)
+    }
+    
+    func textViewDidEndEditing(_ editView: TextEditingView, textView: TextViewContainer) {
+        self.textEditBar.isHidden = editView.currentTextViewContainer == nil
+    }
+    
+}
+
+extension PhotoEditorViewController: SliderDelegate {
+    
+    func sliderBeginEditing(_ slider: Slider) {
+        fontSliderLeftConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func sliderEndEditing(_ slider: Slider) {
+        fontSliderLeftConstraint.constant = -20
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func sliderDidChange(_ slider: Slider, value: CGFloat) {
+        mediaView?.textEditingView.currentTextViewContainer?.setFontSize(value)
+    }
 }

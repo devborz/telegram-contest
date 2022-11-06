@@ -36,7 +36,6 @@ class ToolPickerView: UIView {
     let tools: [Tool] = [
         .init(type: .pen),
         .init(type: .brush),
-        .init(type: .neon),
         .init(type: .pencil),
         .init(type: .lasso),
         .init(type: .eraser)
@@ -62,6 +61,23 @@ class ToolPickerView: UIView {
         }
         layout()
         clipsToBounds = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let layer = CAGradientLayer()
+        layer.startPoint = .init(x: 0, y: 0)
+        layer.endPoint = .init(x: 0, y: 1)
+        layer.colors = [
+            UIColor.black.cgColor,
+            UIColor.clear.cgColor,
+        ]
+        layer.locations = [
+            .init(floatLiteral: (frame.height - 15) / frame.height),
+            .init(floatLiteral: 1)
+        ]
+        layer.frame = .init(origin: .zero, size: frame.size)
+        self.layer.mask = layer
     }
     
     func layout() {

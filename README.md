@@ -1,2 +1,3 @@
 # telegram-contest
-Media Editing App
+
+Just run TelegramPhotoEditor.xcworkspace with Xcode 
